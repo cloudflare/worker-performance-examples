@@ -1,4 +1,8 @@
+const crypto = require('crypto')
+
 exports.handler = (event, context, callback) => {
+  const key = crypto.pbkdf2Sync(crypto.randomBytes(16), crypto.randomBytes(16), 15000, 32, 'sha256')
+
   const response = {
     status: '200',
     statusDescription: 'OK',
@@ -16,7 +20,7 @@ exports.handler = (event, context, callback) => {
         value: 'UTF-8'
       }],
     },
-    body: (new Date).toString(),
+    body: key.toString('hex'),
   };
   callback(null, response);
 };
